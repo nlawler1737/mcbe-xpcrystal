@@ -22,9 +22,9 @@ function handleXpCrystalOnUse(event: ItemComponentUseEvent) {
 
     const newItem = itemStack.clone()
 
-    // if player is sneaking store xp
+    // if player is not sneaking store xp
     // else retrieve xp
-    if (source.isSneaking) {
+    if (!source.isSneaking) {
         let xpToRemove = 0
         let removeLevel = false
 
