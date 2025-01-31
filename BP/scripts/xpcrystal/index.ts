@@ -46,8 +46,9 @@ function handleXpCrystalOnUse(event: ItemComponentUseEvent) {
             source.addExperience(-canRemove)
         }
 
-        updateXpValue(newItem, canRemove, false)
+        const loreStr = updateXpValue(newItem, canRemove, false)
         setInventoryItem(source, newItem, source.selectedSlotIndex)
+        source.onScreenDisplay.setActionBar(loreStr)
     } else {
         let xpToAdd = 0
         let wasMaxedOut = false
@@ -71,8 +72,9 @@ function handleXpCrystalOnUse(event: ItemComponentUseEvent) {
             source.addExperience(-1)
         }
 
-        updateXpValue(newItem, -canAdd, false)
+        const loreStr = updateXpValue(newItem, -canAdd, false)
         setInventoryItem(source, newItem, source.selectedSlotIndex)
+        source.onScreenDisplay.setActionBar(loreStr)
     }
 }
 
@@ -117,13 +119,17 @@ function getExperienceNeededForNextLevel(level: number) {
  * 
  * Uses the item's dynamic property of `EXPERIENCE_DYNAMIC_ID`
  * to set the value
+ * 
+ * @returns new lore string for item
  */
 function updateXpCrystalLore(item: ItemStack) {
     const allLore = item.getLore()
     const currentLoreIndex = allLore.findIndex(a => a.startsWith(LORE_ID))
     const currentXpValue = getCurrentXpValue(item);
-    allLore.splice(currentLoreIndex, 1, getXpStorageLoreString(currentXpValue))
+    const newLoreString = getXpStorageLoreString(currentXpValue)
+    allLore.splice(currentLoreIndex, 1, newLoreString)
     item.setLore(allLore)
+    return newLoreString
 }
 
 /**
@@ -147,6 +153,8 @@ function getCurrentXpValue(item: ItemStack): number {
  * `set` is used to set or add the current value
  * 
  * `set` is `true` by default
+ * 
+ * @returns updated crystal lore string
  */
 function updateXpValue(item: ItemStack, xp: number, set = true) {
     if (set) {
@@ -154,7 +162,7 @@ function updateXpValue(item: ItemStack, xp: number, set = true) {
     } else {
         item.setDynamicProperty(EXPERIENCE_DYNAMIC_ID, getCurrentXpValue(item) + xp)
     }
-    updateXpCrystalLore(item)
+    return updateXpCrystalLore(item)
 }
 
 function setInventoryItem(player: Player, item: ItemStack, index: number, inventory?: EntityInventoryComponent) {
