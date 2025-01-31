@@ -1,0 +1,42 @@
+{
+	"format_version": "1.17.41",
+	"minecraft:recipe_shaped": {
+		"description": {
+			"identifier": "xpcrystal:xpcrystal"
+		},
+		"tags": [
+			"crafting_table"
+		],
+		"key": {
+			"A": {
+				"item": "minecraft:amethyst_cluster"
+			},
+			"E": {
+				"item": "minecraft:experience_bottle"
+			},
+			"G": {
+				"item": "minecraft:glowstone_dust"
+			}
+		},
+		"pattern": [
+			"GEG",
+			"EAE",
+			"GEG"
+		],
+		"result": {
+			"count": 1,
+			"item": "xpcrystal:xpcrystal"
+		},
+		"unlock": [
+			{
+				"item": "minecraft:amethyst_cluster"
+			},
+			{
+				"item": "minecraft:experience_bottle"
+			},
+			{
+				"item": "minecraft:glowstone_dust"
+			}
+		]
+	}
+}

@@ -1,0 +1,42 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": [
+			"nullun"
+		],
+		"generated_with": {
+			"bridge": [
+				"2.7.42"
+			],
+			"dash": [
+				"0.11.7"
+			]
+		}
+	},
+	"header": {
+		"name": "Xp Crystal RP v1.0.0",
+		"description": "Store experience in a crystal for later use. (1.21.51+)",
+		"min_engine_version": [
+			1,
+			21,
+			0
+		],
+		"uuid": "278887ef-b04b-4912-9e41-31caeceb8a60",
+		"version": [
+			1,
+			0,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "resources",
+			"uuid": "562714ea-ed49-46b4-b2ff-a2cd0b3e0bd5",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	]
+}

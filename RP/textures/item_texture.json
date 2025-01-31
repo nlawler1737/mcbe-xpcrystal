@@ -1,0 +1,9 @@
+{
+	"resource_pack_name": "Xp Crystal",
+	"texture_name": "atlas.items",
+	"texture_data": {
+		"xpcrystal_xpcrystal": {
+			"textures": "textures/items/xpcrystal"
+		}
+	}
+}

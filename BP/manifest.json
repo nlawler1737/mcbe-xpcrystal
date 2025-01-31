@@ -1,0 +1,67 @@
+{
+	"format_version": 2,
+	"metadata": {
+		"authors": [
+			"nullun"
+		],
+		"generated_with": {
+			"bridge": [
+				"2.7.42"
+			],
+			"dash": [
+				"0.11.7"
+			]
+		}
+	},
+	"header": {
+		"name": "Xp Crystal BP v1.0.0",
+		"description": "Store experience in a crystal for later use. (1.21.51+)",
+		"min_engine_version": [
+			1,
+			21,
+			0
+		],
+		"uuid": "0c92ab82-e26f-4584-9e92-bfe1760e7108",
+		"version": [
+			1,
+			0,
+			0
+		]
+	},
+	"modules": [
+		{
+			"type": "data",
+			"uuid": "445108ba-9743-4bcf-adb9-16acf7e823e6",
+			"version": [
+				1,
+				0,
+				0
+			]
+		},
+		{
+			"entry": "scripts/main.js",
+			"language": "javascript",
+			"type": "script",
+			"uuid": "1404dd25-2aef-4936-b1ef-3f86ca92b7e9",
+			"version": [
+				1,
+				0,
+				0
+			]
+		}
+	],
+	"dependencies": [
+		{
+			"uuid": "278887ef-b04b-4912-9e41-31caeceb8a60",
+			"version": [
+				1,
+				0,
+				0
+			]
+		},
+		{
+			"module_name": "@minecraft/server",
+			"version": "1.16.0"
+		}
+	]
+}

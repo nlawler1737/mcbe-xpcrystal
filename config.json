@@ -1,0 +1,46 @@
+{
+	"type": "minecraftBedrock",
+	"name": "Xp Crystal",
+	"namespace": "xpcrystal",
+	"authors": [
+		"nullun"
+	],
+	"targetVersion": "1.21.50",
+	"description": "Store experience in a crystal for later use. (1.21.51+)",
+	"experimentalGameplay": {
+		"creationOfCustomBiomes": false,
+		"upcomingCreatorFeatures": false,
+		"enableGameTestFramework": false,
+		"focusTargetCamera": false,
+		"dataDrivenJigsawStructures": false,
+		"aimAssist": false,
+		"educationEdition": false
+	},
+	"bdsProject": false,
+	"packs": {
+		"behaviorPack": "./BP",
+		"resourcePack": "./RP"
+	},
+	"worlds": [
+		"./worlds/*"
+	],
+	"compiler": {
+		"plugins": [
+			"generatorScripts",
+			"typeScript",
+			"entityIdentifierAlias",
+			"customEntityComponents",
+			"customItemComponents",
+			"customBlockComponents",
+			"customCommands",
+			"moLang",
+			"formatVersionCorrection",
+			[
+				"simpleRewrite",
+				{
+					"packName": "Xp Crystal"
+				}
+			]
+		]
+	}
+}
