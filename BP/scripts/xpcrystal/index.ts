@@ -1,4 +1,4 @@
-import { world, ItemCustomComponent, Player, ItemStack, ItemDurabilityComponent, EntityInventoryComponent, ItemComponentUseEvent } from "@minecraft/server"
+import { world, ItemCustomComponent, Player, ItemStack, EntityInventoryComponent, ItemComponentUseEvent } from "@minecraft/server"
 
 const MAX_XP_STORAGE = 10252 // 64 levels
 const LORE_ID = "§x§p§r"
@@ -81,24 +81,24 @@ function handleXpCrystalOnUse(event: ItemComponentUseEvent) {
 function getXpStorageLoreString(value: number) {
     const percent = getDisplayPercent((value / MAX_XP_STORAGE) * 100)
     let color: string;
-    if (percent <= 10) {
-        color = "4"
-    } else if (percent <= 20) {
-        color = "c"
-    } else if (percent <= 30) {
-        color = "v"
-    } else if (percent <= 50) {
-        color = "6"
-    } else if (percent <= 60) {
-        color = "g"
-    } else if (percent <= 80) {
-        color = "e"
-    } else if (percent === 100) {
-        color = "b§l"
-    } else {
+    if (percent === 100) {      // 100
+        color = "b"
+    } else if (percent === 0) { // 0
+        color = "n"
+    } else if (percent > 90) {  // 91 - 99
         color = "a"
+    } else if (percent > 70) {  // 71 - 90
+        color = "e"
+    } else if (percent > 50) {  // 51 - 70
+        color = "g"
+    } else if (percent > 30) {  // 31 - 50
+        color = "6"
+    } else if (percent > 10) {  // 11 - 30
+        color = "v"
+    } else {                    // 1 - 10
+        color = "c"
     }
-    const str = `${LORE_ID}§aXP: ${value} / ${MAX_XP_STORAGE} §${color}(${percent}%)`
+    const str = `${LORE_ID}§7XP: §${color}${percent}% §7(${value} / ${MAX_XP_STORAGE})`
     return str
 }
 
