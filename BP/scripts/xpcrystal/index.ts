@@ -1,4 +1,4 @@
-import { world, ItemCustomComponent, Player, ItemStack, EntityInventoryComponent, ItemComponentUseEvent } from "@minecraft/server"
+import { system, world, ItemCustomComponent, Player, ItemStack, EntityInventoryComponent, ItemComponentUseEvent, EntityItemComponent, Entity } from "@minecraft/server"
 
 const MAX_XP_STORAGE = 10252 // 64 levels
 const LORE_ID = "§x§p§r"
@@ -15,6 +15,38 @@ world.beforeEvents.worldInitialize.subscribe((event) => {
     )
 })
 
+world.afterEvents.entityDie.subscribe((event) => {
+    if (event.deadEntity.typeId !== "minecraft:player") return
+    const player = event.deadEntity as Player;
+    const location = player.getHeadLocation()
+    const xpCrystals = player.dimension.getEntities({ type: "minecraft:item", location, maxDistance: 1 })
+        .reduce((prev, entity) => {
+            const itemComp = entity.getComponent("minecraft:item") as EntityItemComponent;
+            const item = itemComp.itemStack
+            if (item.typeId === "xpcrystal:xpcrystal") prev.push({ entity, item })
+            return prev
+        }, [] as { entity: Entity, item: ItemStack }[])
+        .sort((a, b) => {
+            return getCurrentXpValue(b.item) - getCurrentXpValue(a.item)
+        })
+
+    const level = player.level
+    const xpDroppedOnDeath = Math.min(7 * level, 100)
+    let xpToStore = player.getTotalXp() - xpDroppedOnDeath
+
+    for (let i = 0; i < xpCrystals.length && xpToStore > 0; i++) {
+        const crystal = xpCrystals[i]
+        const currentXpValue = getCurrentXpValue(crystal.item)
+        const canStore = Math.min(xpToStore, MAX_XP_STORAGE - currentXpValue)
+
+        updateXpValue(crystal.item, canStore, false)
+        const newEntity = player.dimension.spawnItem(crystal.item, crystal.entity.location)
+        newEntity.applyImpulse(crystal.entity.getVelocity())
+        crystal.entity.remove()
+        xpToStore -= canStore
+    }
+})
+
 function handleXpCrystalOnUse(event: ItemComponentUseEvent) {
     const { source, itemStack } = event;
     const { xpEarnedAtCurrentLevel: earnedAtLevel, totalXpNeededForNextLevel: totalLevelXp } = source;
@@ -24,7 +56,7 @@ function handleXpCrystalOnUse(event: ItemComponentUseEvent) {
 
     // if player is not sneaking store xp
     // else retrieve xp
-    if (!source.isSneaking) {
+    if (!source.isSneaking) { // store xp
         let xpToRemove = 0
         let removeLevel = false
 
@@ -49,7 +81,7 @@ function handleXpCrystalOnUse(event: ItemComponentUseEvent) {
         const loreStr = updateXpValue(newItem, canRemove, false)
         setInventoryItem(source, newItem, source.selectedSlotIndex)
         source.onScreenDisplay.setActionBar(loreStr)
-    } else {
+    } else { // retrieve xp
         let xpToAdd = 0
         let wasMaxedOut = false
 
