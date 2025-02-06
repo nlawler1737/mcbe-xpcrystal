@@ -1,22 +1,32 @@
-import { ContainerSlot } from "@minecraft/server"
+import { ContainerSlot, ItemStack } from "@minecraft/server"
 import { getDisplayPercent } from "../utils"
 import { EXPERIENCE_DYNAMIC_ID, STOREAGE_LORE_ID, MAX_XP_STORAGE } from "../constants"
 
 export class XpCrystalItemStack {
-    #slot: ContainerSlot;
+    #slot: ContainerSlot
+    #item: ItemStack
+    #crystal: ContainerSlot | ItemStack;
     #xpLore: string;
 
-    constructor(xpCrystalSlot: ContainerSlot) {
-        if (xpCrystalSlot.getItem().typeId !== "xpcrystal:xpcrystal") {
-            throw new Error("'xpCrystal' must be of type 'xpcrystal:xpcrystal'")
+    constructor(xpCrystal: ContainerSlot | ItemStack) {
+        if (xpCrystal instanceof ContainerSlot) {
+            if (xpCrystal.getItem().typeId !== "xpcrystal:xpcrystal") {
+                throw new Error("'xpCrystal' must be of type 'xpcrystal:xpcrystal'")
+            }
+            this.#slot = xpCrystal
+        } else {
+            if (xpCrystal.typeId !== "xpcrystal:xpcrystal") {
+                throw new Error("'xpCrystal' must be of type 'xpcrystal:xpcrystal'")
+            }
+            this.#item = xpCrystal
         }
-        this.#slot = xpCrystalSlot
+        this.#crystal = xpCrystal
     }
 
     get xp() {
-        const val = this.#slot.getDynamicProperty(EXPERIENCE_DYNAMIC_ID) as number;
+        const val = this.#crystal.getDynamicProperty(EXPERIENCE_DYNAMIC_ID) as number;
         if (val == undefined) {
-            this.#slot.setDynamicProperty(EXPERIENCE_DYNAMIC_ID, 0)
+            this.#crystal.setDynamicProperty(EXPERIENCE_DYNAMIC_ID, 0)
             return 0
         }
         return val
@@ -28,6 +38,10 @@ export class XpCrystalItemStack {
 
     get slot() {
         return this.#slot
+    }
+
+    get item() {
+        return this.#item
     }
 
     addExperience(add: number) {
@@ -57,9 +71,9 @@ export class XpCrystalItemStack {
      */
     #updateXp(xp: number, set = true) {
         if (set) {
-            this.#slot.setDynamicProperty(EXPERIENCE_DYNAMIC_ID, xp)
+            this.#crystal.setDynamicProperty(EXPERIENCE_DYNAMIC_ID, xp)
         } else {
-            this.#slot.setDynamicProperty(EXPERIENCE_DYNAMIC_ID, this.xp + xp)
+            this.#crystal.setDynamicProperty(EXPERIENCE_DYNAMIC_ID, this.xp + xp)
         }
         return this.#updateLore()
     }
@@ -75,7 +89,7 @@ export class XpCrystalItemStack {
     #updateLore() {
         const currentXpValue = this.xp;
         this.#xpLore = this.#getXpStorageLoreString(currentXpValue)
-        this.#slot.setLore([this.#xpLore])
+        this.#crystal.setLore([this.#xpLore])
         return this.#xpLore
     }
 
