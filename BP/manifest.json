@@ -14,7 +14,7 @@
 		}
 	},
 	"header": {
-		"name": "Xp Crystal BP v1.0.0",
+		"name": "Xp Crystal BP v1.1.0",
 		"description": "Store experience in a crystal for later use. (1.21.51+)",
 		"min_engine_version": [
 			1,
@@ -24,7 +24,7 @@
 		"uuid": "0c92ab82-e26f-4584-9e92-bfe1760e7108",
 		"version": [
 			1,
-			0,
+			1,
 			0
 		]
 	},
@@ -55,7 +55,7 @@
 			"uuid": "278887ef-b04b-4912-9e41-31caeceb8a60",
 			"version": [
 				1,
-				0,
+				1,
 				0
 			]
 		},
